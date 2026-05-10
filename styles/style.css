@@ -76,8 +76,7 @@ body.light .service-card:hover,
 body.light .project-card:hover {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
 }
-body.light .about-stack,
-body.light .services-cta {
+body.light .about-stack {
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
@@ -504,15 +503,17 @@ nav a:hover {
    Hero
    =========================== */
 .hero {
-  min-height: 100vh;
-  min-height: 100svh;
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 10%;
-  padding-top: var(--header-height);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding-top: calc(var(--header-height) + 40px);
+  padding-bottom: 60px;
 }
 
 .status-badge {
@@ -959,23 +960,69 @@ section {
   border: 1px solid rgba(16, 185, 129, 0.12);
 }
 
-.services-cta {
-  margin-top: 28px;
-  padding: 28px 32px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
-  flex-wrap: wrap;
+/* Card numbers */
+.card-num {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 18px;
 }
 
-.services-cta p {
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--text);
+/* Services CTA card inside grid */
+.service-cta-card {
+  background: var(--gradient);
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+  min-height: 200px;
+}
+.service-cta-card::before {
+  content: "";
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.service-cta-card p {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  position: relative;
+  z-index: 1;
+}
+.service-cta-card .btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  align-self: flex-start;
+  position: relative;
+  z-index: 1;
+  text-decoration: none;
+}
+.service-cta-card .btn-cta:hover {
+  background: rgba(255, 255, 255, 0.28);
+  transform: translateY(-2px);
 }
 
 /* ===========================
@@ -1450,6 +1497,78 @@ footer p {
 }
 
 /* ===========================
+   Hero — Two Column Layout
+   =========================== */
+.hero-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hero-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.hero-photo {
+  width: 300px;
+  height: 370px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+}
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+}
+.photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.photo-placeholder i {
+  font-size: 5rem;
+  color: rgba(16, 185, 129, 0.2);
+}
+.photo-placeholder span {
+  font-size: 0.72rem;
+  color: var(--muted);
+  opacity: 0.5;
+}
+.photo-badge {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  background: rgba(8, 11, 16, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.photo-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ===========================
    Responsive — Tablet (≤ 1100px)
    =========================== */
 @media (max-width: 1100px) {
@@ -1475,6 +1594,13 @@ footer p {
   }
   .about-stack {
     position: static;
+  }
+  .hero {
+    gap: 40px;
+  }
+  .hero-photo {
+    width: 240px;
+    height: 300px;
   }
 }
 
@@ -1539,7 +1665,7 @@ footer p {
   }
 
   .hero {
-    padding: var(--header-height) 5% 0;
+    padding: calc(var(--header-height) + 24px) 5% 40px;
   }
   section {
     padding: 80px 5%;
@@ -1570,19 +1696,18 @@ footer p {
     grid-template-columns: 1fr;
   }
 
+  .hero {
+    grid-template-columns: 1fr;
+  }
+  .hero-right {
+    display: none;
+  }
+
   .stats-row {
     gap: 24px;
   }
   .stat-num {
     font-size: 2rem;
-  }
-
-  .services-cta {
-    flex-direction: column;
-    text-align: center;
-  }
-  .services-cta .btn {
-    width: auto;
   }
 
   .contact-heading {
