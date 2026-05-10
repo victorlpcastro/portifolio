@@ -507,8 +507,8 @@ nav a:hover {
   margin: 0 auto;
   padding: 0 10%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  grid-template-columns: 3fr 2fr;
+  gap: 48px;
   align-items: center;
   min-height: 100vh;
   min-height: 100svh;
@@ -559,7 +559,7 @@ nav a:hover {
 }
 
 .hero h1 {
-  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-size: clamp(2rem, 4vw, 3.5rem);
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 24px;
