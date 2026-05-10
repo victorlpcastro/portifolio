@@ -282,13 +282,19 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
     dot.style.top = my + "px";
   });
 
-  (function animateRing() {
+  let cursorActive = true;
+  document.addEventListener("visibilitychange", () => {
+    cursorActive = !document.hidden;
+    if (cursorActive) rafCursor();
+  });
+  function rafCursor() {
     rx += (mx - rx) * 0.12;
     ry += (my - ry) * 0.12;
     ring.style.left = rx + "px";
     ring.style.top = ry + "px";
-    requestAnimationFrame(animateRing);
-  })();
+    if (cursorActive) requestAnimationFrame(rafCursor);
+  }
+  rafCursor();
 
   document
     .querySelectorAll("a, button, [role='button'], input, textarea")
@@ -368,8 +374,8 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   const ctx = canvas.getContext("2d");
   const COLOR = "16, 185, 129"; // matches --accent rgb
-  const COUNT = 60;
-  let W, H, particles;
+  const COUNT = window.innerWidth < 768 ? 0 : 30;
+  let W, H, particles, animating = true;
 
   function resize() {
     W = canvas.width = window.innerWidth;
@@ -418,8 +424,13 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
       if (p.x < -5) p.x = W + 5;
       if (p.x > W + 5) p.x = -5;
     });
-    requestAnimationFrame(draw);
+    if (animating) requestAnimationFrame(draw);
   }
+
+  document.addEventListener("visibilitychange", () => {
+    animating = !document.hidden;
+    if (animating) requestAnimationFrame(draw);
+  });
 
   window.addEventListener("resize", () => {
     resize();
