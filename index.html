@@ -702,6 +702,8 @@
                 required
               ></textarea>
             </div>
+            <!-- Honeypot: invisible to humans, filled by bots — Formspree ignores these submissions -->
+            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off" />
             <button type="submit" class="btn btn-primary form-submit">
               Send message
               <i class="fas fa-paper-plane" aria-hidden="true"></i>

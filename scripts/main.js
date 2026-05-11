@@ -325,8 +325,21 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
   const status = document.getElementById("form-status");
   if (!form || !status) return;
 
+  const COOLDOWN_MS = 60 * 1000; // 60 seconds between submissions
+  const LS_KEY = "vc_form_last_sent";
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
+    // Cooldown check
+    const lastSent = parseInt(localStorage.getItem(LS_KEY) || "0", 10);
+    const remaining = Math.ceil((COOLDOWN_MS - (Date.now() - lastSent)) / 1000);
+    if (remaining > 0) {
+      status.textContent = `⏱ Please wait ${remaining}s before sending another message.`;
+      status.className = "form-status error";
+      return;
+    }
+
     const btn = form.querySelector(".form-submit");
     const originalHTML = btn.innerHTML;
     btn.disabled = true;
@@ -339,11 +352,12 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
         headers: { Accept: "application/json" },
       });
       if (res.ok) {
+        localStorage.setItem(LS_KEY, Date.now().toString());
         status.textContent = "✓ Message sent! I'll get back to you soon.";
         status.className = "form-status success";
         form.reset();
       } else {
-        throw new Error("Erro ao enviar");
+        throw new Error("send failed");
       }
     } catch {
       status.textContent =
