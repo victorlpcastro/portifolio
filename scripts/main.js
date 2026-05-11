@@ -329,24 +329,51 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
   const status = document.getElementById("form-status");
   if (!form || !status) return;
 
-  const COOLDOWN_MS = 60 * 1000; // 60 seconds between submissions
+  const COOLDOWN_MS = 60 * 1000;
   const LS_KEY = "vc_form_last_sent";
+  const btn = form.querySelector(".form-submit");
+  const originalHTML = btn.innerHTML;
+  let countdownTimer = null;
+
+  function getRemainingSeconds() {
+    const lastSent = parseInt(localStorage.getItem(LS_KEY) || "0", 10);
+    return Math.ceil((COOLDOWN_MS - (Date.now() - lastSent)) / 1000);
+  }
+
+  function startCooldown() {
+    clearInterval(countdownTimer);
+    countdownTimer = setInterval(() => {
+      const remaining = getRemainingSeconds();
+      if (remaining > 0) {
+        btn.disabled = true;
+        btn.innerHTML = `⏱ Wait ${remaining}s`;
+      } else {
+        clearInterval(countdownTimer);
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+        status.textContent = "";
+        status.className = "form-status";
+      }
+    }, 1000);
+    // trigger immediately
+    const remaining = getRemainingSeconds();
+    btn.disabled = true;
+    btn.innerHTML = `⏱ Wait ${remaining}s`;
+  }
+
+  // On page load: if still in cooldown, restore locked state
+  if (getRemainingSeconds() > 0) startCooldown();
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // Cooldown check
-    const lastSent = parseInt(localStorage.getItem(LS_KEY) || "0", 10);
-    const remaining = Math.ceil((COOLDOWN_MS - (Date.now() - lastSent)) / 1000);
-    if (remaining > 0) {
-      status.textContent = `⏱ Please wait ${remaining}s before sending another message.`;
-      status.className = "form-status error";
-      return;
-    }
+    const remaining = getRemainingSeconds();
+    if (remaining > 0) return; // double-guard
 
-    const btn = form.querySelector(".form-submit");
-    const originalHTML = btn.innerHTML;
-    btn.disabled = true;
+    // Lock immediately BEFORE fetch so double-submits are impossible
+    localStorage.setItem(LS_KEY, Date.now().toString());
+    startCooldown();
+
     btn.innerHTML = 'Sending… <i class="fas fa-spinner fa-spin"></i>';
 
     try {
@@ -356,7 +383,6 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
         headers: { Accept: "application/json" },
       });
       if (res.ok) {
-        localStorage.setItem(LS_KEY, Date.now().toString());
         status.textContent = "✓ Message sent! I'll get back to you soon.";
         status.className = "form-status success";
         form.reset();
@@ -367,9 +393,6 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
       status.textContent =
         "✗ Could not send. Try reaching me directly via the email above.";
       status.className = "form-status error";
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = originalHTML;
     }
   });
 })();
