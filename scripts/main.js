@@ -275,11 +275,16 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
     rx = 0,
     ry = 0;
 
+  // Use transform instead of left/top — avoids layout reflow, much faster
+  dot.style.left = "0";
+  dot.style.top = "0";
+  ring.style.left = "0";
+  ring.style.top = "0";
+
   document.addEventListener("mousemove", (e) => {
     mx = e.clientX;
     my = e.clientY;
-    dot.style.left = mx + "px";
-    dot.style.top = my + "px";
+    dot.style.transform = `translate(calc(-50% + ${mx}px), calc(-50% + ${my}px))`;
   });
 
   let cursorActive = true;
@@ -288,10 +293,9 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
     if (cursorActive) rafCursor();
   });
   function rafCursor() {
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + "px";
-    ring.style.top = ry + "px";
+    rx += (mx - rx) * 0.18;
+    ry += (my - ry) * 0.18;
+    ring.style.transform = `translate(calc(-50% + ${rx}px), calc(-50% + ${ry}px))`;
     if (cursorActive) requestAnimationFrame(rafCursor);
   }
   rafCursor();
