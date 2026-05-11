@@ -375,7 +375,11 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
   const ctx = canvas.getContext("2d");
   const COLOR = "16, 185, 129"; // matches --accent rgb
   const COUNT = window.innerWidth < 768 ? 0 : 30;
-  let W, H, particles, animating = true;
+  if (COUNT === 0) return;
+  let W,
+    H,
+    particles,
+    animating = true;
 
   function resize() {
     W = canvas.width = window.innerWidth;

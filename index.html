@@ -13,11 +13,10 @@
     <meta name="robots" content="index, follow" />
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta
-      property="og:url"
-      content="https://victorcastrodev.vercel.app/"
-    />
+    <meta property="og:url" content="https://victorcastrodev.vercel.app/" />
     <meta property="og:title" content="Victor Castro | Full Stack Developer" />
+    <link rel="canonical" href="https://victorcastrodev.vercel.app/" />
+    <meta name="theme-color" content="#080b10" />
     <meta
       property="og:description"
       content="Full Stack Developer focused on scalable solutions, intelligent automation, and AI integration."
@@ -37,9 +36,18 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/brands.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/solid.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/brands.min.css"
+    />
     <link rel="stylesheet" href="styles/style.css" />
   </head>
   <body>
@@ -642,7 +650,6 @@
               ><i class="fas fa-envelope"></i
             ></a>
           </div>
-          <!-- ⚠️ Replace YOUR_FORM_ID with your Formspree ID (formspree.io) -->
           <form
             class="contact-form"
             id="contact-form"
@@ -674,6 +681,18 @@
               </div>
             </div>
             <div class="form-group">
+              <label for="form-phone"
+                >Phone <span class="label-optional">(optional)</span></label
+              >
+              <input
+                type="tel"
+                id="form-phone"
+                name="phone"
+                placeholder="+55 (11) 99999-9999"
+                autocomplete="tel"
+              />
+            </div>
+            <div class="form-group">
               <label for="form-message">Message</label>
               <textarea
                 id="form-message"
@@ -694,7 +713,32 @@
     </main>
 
     <footer>
-      <span class="footer-logo">VC.</span>
+      <a href="#" class="footer-logo" aria-label="Home">
+        <svg
+          width="30"
+          height="26"
+          viewBox="0 0 130 120"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M 25 30 L 55 90 L 85 30"
+            fill="none"
+            stroke="#00E676"
+            stroke-width="12"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M 105 35 A 35 35 0 1 0 105 85"
+            fill="none"
+            stroke="#00E676"
+            stroke-width="12"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </a>
       <p>
         © <span id="copyright-year"></span> Victor Castro. All rights reserved.
       </p>
